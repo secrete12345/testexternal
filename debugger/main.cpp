@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 void interger(HANDLE hProc, int target, int replaceVal) {
-    //const float epsilon = 0.001f; // Tolerance to mimic Cheat Engine's behavior
+    
 
     SYSTEM_INFO sysInfo;
     GetSystemInfo(&sysInfo);
@@ -21,9 +21,9 @@ void interger(HANDLE hProc, int target, int replaceVal) {
             SIZE_T bytesRead;
             if (ReadProcessMemory(hProc, start, buffer.data(), mbi.RegionSize, &bytesRead)) {
 
-                for (SIZE_T i = 0; i < bytesRead - sizeof(float); i++) {
+                for (SIZE_T i = 0; i < bytesRead - sizeof(int); i++) {
                     float val;
-                    memcpy(&val, &buffer[i], sizeof(float));
+                    memcpy(&val, &buffer[i], sizeof(int));
 
                     if (val == target) {
 
@@ -39,7 +39,7 @@ void interger(HANDLE hProc, int target, int replaceVal) {
 }
 
 void ScanAndReplaceFloat(HANDLE hProc, float targetMin, float targetMax, float replaceVal) {
-    const float epsilon = 0.001f; // Tolerance to mimic Cheat Engine's behavior
+    const float epsilon = 0.001f; // for inaccuracy of float
 
     SYSTEM_INFO sysInfo;
     GetSystemInfo(&sysInfo);
@@ -129,7 +129,7 @@ int main() {
         int choice;
         std::cin >> choice;
 
-        if (choice == 1) {
+        if (choice == 1) { //bug please don't use by any circumstance trying to fix as soon as possible 12/8/25
             int val , replacetar;
             std::cout << "Enter integer to scan for: ";
             std::cin >> val;
@@ -191,3 +191,4 @@ int main() {
     CloseHandle(hProc);
     return 0;
 }
+
