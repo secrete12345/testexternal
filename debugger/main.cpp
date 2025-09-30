@@ -22,7 +22,7 @@ void interger(HANDLE hProc, int target, int replaceVal) {
             if (ReadProcessMemory(hProc, start, buffer.data(), mbi.RegionSize, &bytesRead)) {
 
                 for (SIZE_T i = 0; i < bytesRead - sizeof(int); i++) {
-                    float val;
+                    int val;
                     memcpy(&val, &buffer[i], sizeof(int));
 
                     if (val == target) {
@@ -112,7 +112,7 @@ int main() {
     std::cout << "Enter PID of target process: ";
     std::cin >> pid;
 
-    HANDLE hProc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+    HANDLE hProc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);//hproc
     if (!hProc) {
         std::cerr << "Failed to open process.\n";
         return 1;
@@ -129,7 +129,7 @@ int main() {
         int choice;
         std::cin >> choice;
 
-        if (choice == 1) { //bug please don't use by any circumstance trying to fix as soon as possible 12/8/25
+        if (choice == 1) { //updated haven't check yet 30/9/25
             int val , replacetar;
             std::cout << "Enter integer to scan for: ";
             std::cin >> val;
@@ -191,4 +191,5 @@ int main() {
     CloseHandle(hProc);
     return 0;
 }
+
 
