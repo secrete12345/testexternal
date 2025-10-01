@@ -2,7 +2,74 @@
 #include <iostream>
 #include <vector>
 #include <string>
-void interger(HANDLE hProc, int target, int replaceVal) {
+#include <conio.h>
+void positiontest(HANDLE hProv,float replaceVal){// DO NOT USE THIS FUNCTION YET
+    SYSTEM_INFO sysInfo;
+    GetSystemInfo(&sysInfo);
+    LPCVOID start = sysInfo.lpMinimumApplicationAddress;
+    LPCVOID end = sysInfo.lpMinimumApplicationAddress;
+    MEMORY_BASIC_INFORMATION mbi;
+    std::vector<BYTE> buffer;
+    float val[mbi.RegionSize];
+    float val2[mbi.RegionSize];
+    std::vector<uint_ptr> mem_read;
+    while(start < end){
+        if(VirtualQueryEx(hProc,start,&mbi,sizeof(mbi)) && mbi.State == MEM_COMMIT && (mbi.Protect & PAGE_READWRITE)) {
+            buffer.resize(mbi.RegionSize);
+            SIZE_T bytesread;
+            do {
+                key_pressed = _getch();
+            } while (key_pressed != 'k');
+
+            if (GetAsyncKeyState(VK_K) & 0x8000) {
+                if(ReadProcessMemory(hProc , start , buffer.data() , mbi.RegionSize , &bytesread)){
+                     for (SIZE_T i = 0; i < bytesRead - sizeof(float); i++) {
+                        
+                        memcpy(&val[i], &buffer[i], sizeof(float));
+
+                         
+                     }
+                }
+            }
+            Sleep(1);
+            do {
+                key_pressed = _getch();
+            } while (key_pressed != 'k');
+            if (GetAsyncKeyState(VK_K) & 0x8000) {
+                if(ReadProcessMemory(hProc , start , buffer.data() , mbi.RegionSize , &bytesread)){
+                     int count = 0;
+                     for (SIZE_T i = 0; i < bytesRead - sizeof(float); i++) {
+                        
+                        memcpy(&val2, &buffer[i], sizeof(float));
+
+                        if (val == val2) {
+                            
+                            uintptr_t addrToWrite = (uintptr_t)start + i;
+                            std::cout << count << ": " << val << std::endl;
+                            mem_read[count] = addrToWrite;                         
+                            //WriteProcessMemory(hProc, (LPVOID)addrToWrite, &replaceVal, sizeof(int), nullptr);
+                            //std::cout << "Replaced int at: " << (void*)addrToWrite << " (was " << val << ")\n";
+                        }
+                        count++;
+                     }
+                }
+            }
+            
+            }          
+            
+        }
+    }
+    int option;
+    std::cout << "Option 1: all address\n";
+    std::cout << "       2: select index\n";
+    std::cin >> option;
+    if(option == 1){
+        for(int i = 0; i <= mem_read.size(); i++){   
+            WriteProcessMemory(hProc , (LPCVOID)mem_read[i],&replaceval,sizeof(float) , nullptr);
+        }
+    }
+}
+void integer(HANDLE hProc, int target, int replaceVal) {
     
 
     SYSTEM_INFO sysInfo;
@@ -135,33 +202,7 @@ int main() {
             std::cin >> val;
             std::cout << "Enter interger to replace: ";
             std::cin >> replacetar;
-            interger(hProc , val , replacetar);
-            /*
-            SYSTEM_INFO sysInfo;
-            GetSystemInfo(&sysInfo);
-            LPCVOID start = sysInfo.lpMinimumApplicationAddress;
-            LPCVOID end = sysInfo.lpMaximumApplicationAddress;
-
-            MEMORY_BASIC_INFORMATION mbi;
-            std::vector<BYTE> buffer;
-
-            while (start < end) {
-                if (VirtualQueryEx(hProc, start, &mbi, sizeof(mbi)) && mbi.State == MEM_COMMIT && (mbi.Protect & PAGE_READWRITE)) {
-                    buffer.resize(mbi.RegionSize);
-                    SIZE_T bytesRead;
-                    if (ReadProcessMemory(hProc, start, buffer.data(), mbi.RegionSize, &bytesRead)) {
-                        for (SIZE_T i = 0; i < bytesRead - sizeof(int); i++) {
-                            int found;
-                            memcpy(&found, &buffer[i], sizeof(int));
-                            if (found == val) {
-                                std::cout << "Found value at: " << (void*)((uintptr_t)start + i) << "\n";
-                            }
-                        }
-                    }
-                }
-                start = (LPCVOID)((uintptr_t)start + mbi.RegionSize);
-            }*/
-
+            integer(hProc , val , replacetar);
         }
         else if (choice == 2) {
             float minVal, maxVal, replaceVal;
@@ -191,5 +232,6 @@ int main() {
     CloseHandle(hProc);
     return 0;
 }
+
 
 
