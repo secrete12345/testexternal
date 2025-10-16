@@ -20,7 +20,7 @@ void positiontest(HANDLE hProv,float replaceVal){// DO NOT USE THIS FUNCTION YET
             do {
                 key_pressed = _getch();
             } while (key_pressed != 'k');
-
+            //read before move
             if (GetAsyncKeyState(VK_K) & 0x8000) {
                 if(ReadProcessMemory(hProc , start , buffer.data() , mbi.RegionSize , &bytesread)){
                      for (SIZE_T i = 0; i < bytesRead - sizeof(float); i++) {
@@ -35,6 +35,7 @@ void positiontest(HANDLE hProv,float replaceVal){// DO NOT USE THIS FUNCTION YET
             do {
                 key_pressed = _getch();
             } while (key_pressed != 'k');
+            //read after move
             if (GetAsyncKeyState(VK_K) & 0x8000) {
                 if(ReadProcessMemory(hProc , start , buffer.data() , mbi.RegionSize , &bytesread)){
                      int count = 0;
@@ -232,6 +233,7 @@ int main() {
     CloseHandle(hProc);
     return 0;
 }
+
 
 
 
