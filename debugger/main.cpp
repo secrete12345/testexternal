@@ -119,8 +119,7 @@ void ScanAndReplaceFloat(HANDLE hProc, float targetMin, float targetMax, float r
     //int test = 0; // for testing
     while (start < end) {
         //test += 1;
-        if (VirtualQueryEx(hProc, start, &mbi, sizeof(mbi)) && mbi.State == MEM_COMMIT && (mbi.Protect & PAGE_READWRITE)) {
-            
+        if (VirtualQueryEx(hProc, start, &mbi, sizeof(mbi)) && mbi.State == MEM_COMMIT && (mbi.Protect & PAGE_READWRITE)) {//get the memory addresses of the target program
             buffer.resize(mbi.RegionSize);
             SIZE_T bytesRead;
             if (ReadProcessMemory(hProc, start, buffer.data(), mbi.RegionSize, &bytesRead)) {
@@ -233,6 +232,7 @@ int main() {
     CloseHandle(hProc);
     return 0;
 }
+
 
 
 
